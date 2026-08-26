@@ -2,9 +2,8 @@ name: Every Minute Counter Test
 
 on:
   schedule:
-    # 5分ごとにワークフローを起動（GitHub上の最短間隔）
     - cron: '*/5 * * * *'
-  workflow_dispatch:  # 手動実行用
+  workflow_dispatch:
 
 jobs:
   run-counter:
@@ -21,3 +20,12 @@ jobs:
 
       - name: Run Counter Script
         run: python main.py
+
+      # Discordへの通知ステップ
+      - name: Send Discord Notification
+        if: always()
+        run: |
+          curl -H "Content-Type: application/json" \
+          -X POST \
+          -d '{"content": "GitHub Actionsの処理が完了しました！"}' \
+          ${{ secrets.DISCORD_WEBHOOK_URL }}
