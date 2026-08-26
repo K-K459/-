@@ -1,0 +1,23 @@
+name: Every Minute Counter Test
+
+on:
+  schedule:
+    # 5分ごとにワークフローを起動（GitHub上の最短間隔）
+    - cron: '*/5 * * * *'
+  workflow_dispatch:  # 手動実行用
+
+jobs:
+  run-counter:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Run Counter Script
+        run: python main.py
